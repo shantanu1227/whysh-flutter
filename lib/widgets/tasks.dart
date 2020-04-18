@@ -10,6 +10,18 @@ class TasksList extends StatelessWidget {
 
   TasksList(this.futureTasks, this.showContact, this.isCreator);
 
+  Widget getList(BuildContext context, AsyncSnapshot<Tasks> snapshot) {
+    return ListView.builder(
+      padding: EdgeInsets.all(8),
+      itemCount: snapshot.data.tasks.length,
+      itemBuilder: (context, index) {
+        final item = snapshot.data.tasks.elementAt(index);
+        return new TaskItem(item, showContact: showContact,
+            isCreator: isCreator);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,19 +32,11 @@ class TasksList extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.tasks.length == 0) {
-            return Card(margin: EdgeInsets.all(8), child: Text('No Tasks.'));
+            return Center(child: Text('No Tasks.', style: TextStyle(fontSize: 36),));
           }
-          return ListView.builder(
-            padding: EdgeInsets.all(8),
-            itemCount: snapshot.data.tasks.length,
-            itemBuilder: (context, index) {
-              final item = snapshot.data.tasks.elementAt(index);
-              return new TaskItem(item, showContact: showContact,
-                  isCreator: isCreator);
-            },
-          );
+          return getList(context, snapshot);
         } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
+          return Center(child: Text('${snapshot.error}', style: TextStyle(fontSize: 36),));
         }
         // By default, show a loading spinner.
         return CircularProgressIndicator();
