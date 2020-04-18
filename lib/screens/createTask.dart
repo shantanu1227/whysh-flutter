@@ -25,7 +25,11 @@ class _CreateTaskScreen extends State<CreateTaskScreen> {
         appBar: CustomAppBar(title: Text('Create a Task'), appBar: AppBar(), automaticallyImplyLeading: true),
         drawer: NavigationDrawer(),
         body: Container(
-          child: CreateTaskForm(),
+          color: Colors.grey[200],
+          padding: EdgeInsets.all(8),
+          child: Card(
+            child: CreateTaskForm()
+          ),
         )
     );
   }

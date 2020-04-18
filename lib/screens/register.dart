@@ -59,7 +59,8 @@ class RegisterScreen extends StatelessWidget {
                       decoration: InputDecoration(
                           labelText: "Delivery Pincode",
                           hintText: "Delivery Pincode"),
-                      controller: _zipController),
+                      controller: _zipController
+                      ),
                   SizedBox(height: 32),
                   RegisterButton(_registerFormKey, _zipController,
                       _nameController)
@@ -93,8 +94,10 @@ class _RegisterButton extends State<RegisterButton> {
 
   _RegisterButton(this._registerFormKey, this._zipController, this._nameController) : super();
 
+
   void registerUser(BuildContext context, String name, String zip) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (_registerFormKey.currentState.validate()) {
+   SharedPreferences prefs = await SharedPreferences.getInstance();
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     try {
       await Api.registerUser(currentUser.phoneNumber, name, zip);
@@ -114,7 +117,8 @@ class _RegisterButton extends State<RegisterButton> {
     Navigator.pushNamedAndRemoveUntil(
         context,
         RouteNames.pendingTasks,
-        (r) => false);
+        (r) => false); 
+  }
   }
 
   Widget getRegisterButtonChild() {

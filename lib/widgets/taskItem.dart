@@ -196,11 +196,11 @@ class _TaskItem extends State<TaskItem> {
       actionText = 'Volunteer';
       actionPress = _assignTask;
     } else if (task.status == 'assigned' && isCreator) {
-      actionText = 'Done';
+      actionText = 'Mark as Complete';
       actionPress = _completeTask;
     }
     if (task.status != 'cancelled' && task.status != 'completed' && isCreator) {
-      cancelText = 'Cancel ?';
+      cancelText = 'Cancel Task';
     }
     var actionButton;
     var cancelButton;
@@ -218,10 +218,14 @@ class _TaskItem extends State<TaskItem> {
       children.add(actionButton);
     }
     if (cancelText != null) {
-      cancelButton = RaisedButton(
+      cancelButton = ButtonTheme(
+        minWidth: 200,
+        child: RaisedButton(
         child: Text(cancelText),
         color: Colors.deepOrangeAccent,
+        textColor: Colors.white,
         onPressed: () => _cancelTask(context),
+      ),
       );
       children.add(cancelButton);
     }

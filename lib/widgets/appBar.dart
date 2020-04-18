@@ -13,11 +13,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({Key key, this.title, this.appBar, this.widgets, this.automaticallyImplyLeading, this.showIcon})
       : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
+    num titlePadding = 0;
+    if (showIcon == true) {
+      titlePadding = 8.0;
+    }
     List<Widget> appBarTitleElements = [
               Container(
-                  padding: const EdgeInsets.all(8.0), child: title)
+                  padding: EdgeInsets.all(titlePadding), child: title)
             ];
 
     if (showIcon == true) {
