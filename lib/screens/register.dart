@@ -4,6 +4,7 @@ import 'package:community/network/api/api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:community/widgets/appBar.dart';
 
 class RegisterScreen extends StatelessWidget {
   final _zipController = TextEditingController();
@@ -12,7 +13,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Register')),
+        appBar: CustomAppBar(title: Text('Register'), appBar: AppBar(), automaticallyImplyLeading: false, showIcon: true),
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(32),

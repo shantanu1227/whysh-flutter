@@ -2,6 +2,7 @@ import 'package:community/config/constants.dart';
 import 'package:community/config/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:community/widgets/appBar.dart';
 
 
 class LoginScreen extends StatelessWidget {
@@ -69,9 +70,11 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
         title: Text("Login"),
-        automaticallyImplyLeading: false,
+        appBar: AppBar(),
+        automaticallyImplyLeading: false, 
+        showIcon: true
       ),
       body: SingleChildScrollView(
         child: Container(

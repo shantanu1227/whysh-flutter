@@ -5,6 +5,7 @@ import 'package:community/widgets/drawer.dart';
 import 'package:community/widgets/tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:community/widgets/appBar.dart';
 
 class PendingTasksScreen extends StatefulWidget {
 
@@ -37,9 +38,7 @@ class _PendingTasksScreen extends State<PendingTasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Help Someone In $zip'),
-        ),
+        appBar: CustomAppBar(title: Text('Help Someoone in $zip'), appBar: AppBar(), automaticallyImplyLeading: true),
         drawer: NavigationDrawer(),
         body: TasksList(futureTasks, false, false)
     );

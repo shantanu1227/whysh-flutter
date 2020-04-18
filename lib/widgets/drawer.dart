@@ -4,6 +4,7 @@ import 'package:community/screens/landing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:community/config/methods.dart';
 
 import 'appRouteObserver.dart';
 
@@ -85,7 +86,7 @@ class _NavigationDrawer extends State<NavigationDrawer> with RouteAware {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(child: Center(child: Text(name != null ? 'Hi, $name' : ''))),
+          DrawerHeader(child: Center(child: Text(name != null ? capitalize('Hi, $name') : ''))),
           ListTile(
             title: Text('Help Someone'),
             onTap: () async {
