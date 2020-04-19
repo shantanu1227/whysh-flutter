@@ -32,7 +32,7 @@ class _LandingPage extends State<LandingPage> {
         redirectTo = RouteNames.pendingTasks;
       }
     }
-    Future.microtask(() => Navigator.pushNamed(context, redirectTo));
+    Future.microtask(() => Navigator.popAndPushNamed(context, redirectTo));
   }
 
   Future<int> getUserZip() {

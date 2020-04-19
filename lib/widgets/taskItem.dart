@@ -131,15 +131,21 @@ class _TaskItem extends State<TaskItem> {
         ]);
   }
 
-  Widget getCreatedAtRow() {
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        new Tooltip(
-          message: task.createdAt.toString(),
+  Widget getCreatedByRow() {
+    List<Widget> children = [];
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.end;
+    if (showContact && !isCreator) {
+      mainAxisAlignment = MainAxisAlignment.spaceBetween;
+      children.add(Text('Added By ${task.createdBy.name}'));
+    }
+    children.add(
+        new Tooltip(message: task.createdAt.toString(),
           child: new Text(timeago.format(task.createdAt)),
         )
-      ],
+    );
+    return new Row(
+      mainAxisAlignment: mainAxisAlignment,
+      children: children,
     );
   }
 
@@ -183,7 +189,7 @@ class _TaskItem extends State<TaskItem> {
         new IconButton(
             icon: Icon(Icons.call, color: Colors.blueAccent, size: 20.0),
             onPressed: () => this._launchCallUrl(phone)),
-        new Expanded(child: Text(phone, style: TextStyle(color: Colors.grey[600])))
+        new Expanded(child: GestureDetector(child: Text(phone, style: TextStyle(color: Colors.grey[600])), onTap: () => this._launchCallUrl(phone),))
       ],
     );
   }
@@ -207,7 +213,7 @@ class _TaskItem extends State<TaskItem> {
     var children = new List<Widget>();
     if (actionText != null) {
       actionButton = ButtonTheme(
-        minWidth: 200.0,
+        minWidth: 150.0,
         child: RaisedButton(
         child: Text(actionText),
         color: Colors.lightBlue[700],
@@ -219,7 +225,7 @@ class _TaskItem extends State<TaskItem> {
     }
     if (cancelText != null) {
       cancelButton = ButtonTheme(
-        minWidth: 200,
+        minWidth: 150,
         child: RaisedButton(
         child: Text(cancelText),
         color: Colors.deepOrangeAccent,
@@ -266,14 +272,15 @@ class _TaskItem extends State<TaskItem> {
                   height: 8,
                 ),
                 getAddress(),
+                getContactRow(),
                 SizedBox(
                   height: 10,
                 ),
                 getActionRow(context),
-                getContactRow(),
                 SizedBox(
                   height: 8,
                 ),
+                getCreatedByRow()
               ],
             )));
   }

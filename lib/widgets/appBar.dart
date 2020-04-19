@@ -16,9 +16,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    num titlePadding = 0;
+    double titlePadding = 0;
     if (showIcon == true) {
-      titlePadding = 8.0;
+      titlePadding = 8;
     }
     List<Widget> appBarTitleElements = [
               Container(
