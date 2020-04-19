@@ -109,11 +109,11 @@ class _TaskItem extends State<TaskItem> {
 
   statusColorLabel(String status) {
     if (status == 'pending') {
-      return Colors.greenAccent;
+      return Color(0xFF6B6B67);
     } else if (status == 'cancelled') {
-      return Colors.redAccent;
+      return Color(0xFFC0392B);
     } else if (status == 'assigned') {
-      return Colors.orangeAccent;
+      return Colors.green;
     }
     return Colors.blueAccent;
   }
@@ -122,11 +122,11 @@ class _TaskItem extends State<TaskItem> {
     return new Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          new Text("#${task.id}"),
-          new Text(
-            task.status.toUpperCase(),
-            style:
-                new TextStyle(backgroundColor: statusColorLabel(task.status)),
+          new Text("#${task.id}", style: new TextStyle(color: Colors.grey[600]),),
+          new Container(
+            padding: EdgeInsets.all(8.0),
+            child: new Text(task.status.toUpperCase(), style: new TextStyle(color: Colors.white)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: statusColorLabel(task.status))
           ),
         ]);
   }
@@ -148,7 +148,7 @@ class _TaskItem extends State<TaskItem> {
       children: <Widget>[
         new Expanded(
             child: new Text(task.task,
-                textAlign: TextAlign.start, style: new TextStyle(fontSize: 24)))
+                textAlign: TextAlign.start, style: new TextStyle(fontSize: 20)))
       ],
     );
   }
@@ -160,10 +160,10 @@ class _TaskItem extends State<TaskItem> {
             icon: Icon(
               Icons.directions,
               color: Colors.blueAccent,
-              size: 30.0,
+              size: 20.0,
             ),
             onPressed: () => this._launchNavigationURL()),
-        new Expanded(child: GestureDetector(child: Text(task.address.getAddress()), onTap: () => this._launchNavigationURL()))
+        new Expanded(child: GestureDetector(child: Text(task.address.getAddress(), style: TextStyle(color: Colors.grey[600])), onTap: () => this._launchNavigationURL()))
       ],
     );
   }
@@ -181,9 +181,9 @@ class _TaskItem extends State<TaskItem> {
     return new Row(
       children: <Widget>[
         new IconButton(
-            icon: Icon(Icons.call, color: Colors.blueAccent, size: 30.0),
+            icon: Icon(Icons.call, color: Colors.blueAccent, size: 20.0),
             onPressed: () => this._launchCallUrl(phone)),
-        new Expanded(child: Text(phone))
+        new Expanded(child: Text(phone, style: TextStyle(color: Colors.grey[600])))
       ],
     );
   }
@@ -193,31 +193,39 @@ class _TaskItem extends State<TaskItem> {
     var actionPress;
     String cancelText;
     if (task.status == 'pending' && !isCreator) {
-      actionText = 'Help';
+      actionText = 'Volunteer';
       actionPress = _assignTask;
     } else if (task.status == 'assigned' && isCreator) {
-      actionText = 'Done';
+      actionText = 'Mark as Complete';
       actionPress = _completeTask;
     }
     if (task.status != 'cancelled' && task.status != 'completed' && isCreator) {
-      cancelText = 'Cancel ?';
+      cancelText = 'Cancel Task';
     }
     var actionButton;
     var cancelButton;
     var children = new List<Widget>();
     if (actionText != null) {
-      actionButton = RaisedButton(
+      actionButton = ButtonTheme(
+        minWidth: 200.0,
+        child: RaisedButton(
         child: Text(actionText),
-        color: Colors.cyanAccent,
-        onPressed: () => actionPress(context),
+        color: Colors.lightBlue[700],
+        textColor: Colors.white,
+        onPressed: () => actionPress(context)
+      )
       );
       children.add(actionButton);
     }
     if (cancelText != null) {
-      cancelButton = RaisedButton(
+      cancelButton = ButtonTheme(
+        minWidth: 200,
+        child: RaisedButton(
         child: Text(cancelText),
         color: Colors.deepOrangeAccent,
+        textColor: Colors.white,
         onPressed: () => _cancelTask(context),
+      ),
       );
       children.add(cancelButton);
     }

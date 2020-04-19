@@ -79,12 +79,15 @@ class _CreateTaskForm extends State<CreateTaskForm> {
                 Text('Add Address'),
                 AddressForm(address: this.address),
                 SizedBox(height: 16),
-                RaisedButton(
+                ButtonTheme(
+                  minWidth: 200,
+                  child: RaisedButton(
                     onPressed: () {_createTask(context);},
                     child: Text('Create Task'),
-                    color: Colors.blueAccent,
+                    color: Colors.lightBlue[700],
                     textColor: Colors.white
                 )
+                  )
               ],
             ), // we will work in here
           ],

@@ -1,6 +1,7 @@
 import 'package:community/widgets/createTaskForm.dart';
 import 'package:community/widgets/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:community/widgets/appBar.dart';
 
 class CreateTaskScreen extends StatefulWidget {
 
@@ -21,12 +22,14 @@ class _CreateTaskScreen extends State<CreateTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Create Task'),
-        ),
+        appBar: CustomAppBar(title: Text('Create a Task'), appBar: AppBar(), automaticallyImplyLeading: true),
         drawer: NavigationDrawer(),
         body: Container(
-          child: CreateTaskForm(),
+          color: Colors.grey[200],
+          padding: EdgeInsets.all(8),
+          child: Card(
+            child: CreateTaskForm()
+          ),
         )
     );
   }

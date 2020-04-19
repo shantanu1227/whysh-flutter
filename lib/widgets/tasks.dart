@@ -24,7 +24,9 @@ class TasksList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      color: Colors.grey[200],
+      child: Center(
         child: FutureBuilder<Tasks>(
       future: futureTasks,
       builder: (context, snapshot) {
@@ -39,6 +41,7 @@ class TasksList extends StatelessWidget {
         // By default, show a loading spinner.
         return CircularProgressIndicator();
       },
-    ));
-  }
+    ))
+    );
+    }
 }

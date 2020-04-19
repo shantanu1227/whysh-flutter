@@ -3,6 +3,7 @@ import 'package:community/network/models/tasks.dart';
 import 'package:community/widgets/drawer.dart';
 import 'package:community/widgets/tasks.dart';
 import 'package:flutter/material.dart';
+import 'package:community/widgets/appBar.dart';
 
 class CreatedTasksScreen extends StatefulWidget {
   CreatedTasksScreen({Key key}) : super(key: key);
@@ -27,10 +28,8 @@ class _CreatedTasksScreen extends State<CreatedTasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Created Tasks'),
-        ),
-        drawer: NavigationDrawer(),
-        body: TasksList(futureTasks, true, true));
+      appBar: CustomAppBar(title: Text('Created Tasks'), appBar: AppBar(), automaticallyImplyLeading: true),
+      drawer: NavigationDrawer(),
+      body: TasksList(futureTasks, true, true));
   }
 }

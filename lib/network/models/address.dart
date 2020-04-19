@@ -38,7 +38,9 @@ class Address {
       this.location});
 
   String getAddress() {
-    return "${this.flat}, ${this.street1}, ${this.street2}, ${this.pincode}, ${this.city}, ${this.country}";
+    List address = [this.flat, this.street1, this.street2, this.pincode, this.city, this.country];
+    address.removeWhere((value) => value == null);
+    return address.join(', ');
   }
 
   factory Address.fromJson(Map<String, dynamic> json) {

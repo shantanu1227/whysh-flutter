@@ -4,6 +4,7 @@ import 'package:community/network/api/api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:community/widgets/appBar.dart';
 
 class RegisterScreen extends StatelessWidget {
   final _zipController = TextEditingController();
@@ -13,7 +14,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Register')),
+        appBar: CustomAppBar(title: Text('Register'), appBar: AppBar(), automaticallyImplyLeading: false, showIcon: true),
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(32),
@@ -58,7 +59,8 @@ class RegisterScreen extends StatelessWidget {
                       decoration: InputDecoration(
                           labelText: "Delivery Pincode",
                           hintText: "Delivery Pincode"),
-                      controller: _zipController),
+                      controller: _zipController
+                      ),
                   SizedBox(height: 32),
                   RegisterButton(_registerFormKey, _zipController,
                       _nameController)
@@ -92,8 +94,10 @@ class _RegisterButton extends State<RegisterButton> {
 
   _RegisterButton(this._registerFormKey, this._zipController, this._nameController) : super();
 
+
   void registerUser(BuildContext context, String name, String zip) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (_registerFormKey.currentState.validate()) {
+   SharedPreferences prefs = await SharedPreferences.getInstance();
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     try {
       await Api.registerUser(currentUser.phoneNumber, name, zip);
@@ -113,7 +117,8 @@ class _RegisterButton extends State<RegisterButton> {
     Navigator.pushNamedAndRemoveUntil(
         context,
         RouteNames.pendingTasks,
-        (r) => false);
+        (r) => false); 
+  }
   }
 
   Widget getRegisterButtonChild() {
