@@ -29,6 +29,15 @@ def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+} else {
+    //Loading from env and continuous delivery
+    def storeFile = rootProject.file('keystore.jks')
+    if (storeFile.exists()) {
+        keystoreProperties.setProperty('storeFile', storeFile.path)
+        keystoreProperties.setProperty('keyAlias', "$System.env.KEY_ALIAS")
+        keystoreProperties.setProperty('keyPassword', "$System.env.KEY_PASSWORD")
+        keystoreProperties.setProperty('storePassword', "$System.env.STORE_PASSWORD")
+    }
 }
 
 android {

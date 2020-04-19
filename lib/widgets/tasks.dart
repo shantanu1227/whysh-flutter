@@ -1,7 +1,6 @@
-import 'package:community/network/models/tasks.dart';
 import 'package:flutter/material.dart';
-
-import 'TaskItem.dart';
+import 'package:community/network/models/tasks.dart';
+import 'package:community/widgets/taskItem.dart';
 
 class TasksList extends StatelessWidget {
   final Future<Tasks> futureTasks;
