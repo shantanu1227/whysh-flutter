@@ -2,7 +2,7 @@ name: Whysh-Client
 
 on:
   push:
-    branches: [ feature/appdistribution ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -48,7 +48,7 @@ jobs:
       - name: Upload to google distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
         with:
-          appId: ${{secrets.ANDROID_FIREBASE_APP_ID}}
-          token: ${{secrets.FIREBASE_TOKEN}}
-          groups: friends-and-family
+          appId: ${{ secrets.ANDROID_FIREBASE_APP_ID }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          groups: ${{ secrets.TESTER_GROUPS }}
           file: build/app/outputs/apk/release/app-release.apk
