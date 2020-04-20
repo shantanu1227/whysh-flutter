@@ -45,3 +45,10 @@ jobs:
           name: app-release.apk
           path: build/app/outputs/apk/release/app-release.apk
 
+      - name: Upload to google distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
+        with:
+          appId: ${{ secrets.ANDROID_FIREBASE_APP_ID }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          groups: ${{ secrets.TESTER_GROUPS }}
+          file: build/app/outputs/apk/release/app-release.apk
