@@ -1,11 +1,10 @@
 import 'package:community/config/constants.dart';
-import 'package:community/network/api/api.dart';
-import 'package:community/network/models/tasks.dart';
+import 'package:community/enums/TaskType.dart';
+import 'package:community/widgets/appBar.dart';
 import 'package:community/widgets/drawer.dart';
 import 'package:community/widgets/tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:community/widgets/appBar.dart';
 
 class PendingTasksScreen extends StatefulWidget {
 
@@ -18,7 +17,6 @@ class PendingTasksScreen extends StatefulWidget {
 }
 
 class _PendingTasksScreen extends State<PendingTasksScreen> {
-  Future<Tasks> futureTasks;
   int zip;
 
   _PendingTasksScreen();
@@ -29,7 +27,6 @@ class _PendingTasksScreen extends State<PendingTasksScreen> {
     SharedPreferences.getInstance().then((prefs) {
       setState(() {
         zip = prefs.getInt(Constants.SF_KEY_ZIP);
-        futureTasks = Api.getPendingTasks(zip);
       });
     });
 
@@ -37,10 +34,16 @@ class _PendingTasksScreen extends State<PendingTasksScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Widget body;
+    if (zip == null) {
+      body = CircularProgressIndicator();
+    } else {
+      body = TasksList(TaskType.PENDING, false, false, zip: zip);
+    }
     return Scaffold(
         appBar: CustomAppBar(title: Text('Help Someoone in $zip'), appBar: AppBar(), automaticallyImplyLeading: true),
         drawer: NavigationDrawer(),
-        body: TasksList(futureTasks, false, false)
+        body: body
     );
   }
 }

@@ -13,11 +13,17 @@ class Api {
 
   static List<Category> categories;
 
-  static Future<Tasks> getTasks(String url) async {
+  static Future<Tasks> getTasks(String url, {String page}) async {
     Map<String, String> headers = await ApiHelper.getHeaders();
-    final response = await http.get(url, headers: headers);
+    String requestURL = url;
+    if (page != null) {
+      requestURL = '$requestURL?page=$page';
+    }
+    final response = await http.get(requestURL, headers: headers);
     if (response.statusCode == HttpStatus.ok) {
-      return Tasks.fromJson(json.decode(response.body));
+      Tasks tasks = Tasks.fromJson(json.decode(response.body));
+      tasks.currentUrl = url;
+      return tasks;
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -25,19 +31,19 @@ class Api {
     }
   }
 
-  static Future<Tasks> getPendingTasks(zip) async {
+  static Future<Tasks> getPendingTasks(zip, {page}) async {
     String url = Constants.BASE_URL + '/tasks/$zip/incomplete';
-    return getTasks(url);
+    return getTasks(url, page: page);
   }
 
-  static Future<Tasks> getCreatedTasks() async {
+  static Future<Tasks> getCreatedTasks({page}) async {
     const url = Constants.BASE_URL + '/users/creator/tasks';
-    return getTasks(url);
+    return getTasks(url, page: page);
   }
 
-  static Future<Tasks> getAssignedTasks() async {
+  static Future<Tasks> getAssignedTasks({page}) async {
     const url = Constants.BASE_URL + '/users/assignee/tasks';
-    return getTasks(url);
+    return getTasks(url, page: page);
   }
 
   static Future<void> registerUser(

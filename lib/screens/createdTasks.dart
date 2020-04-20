@@ -1,9 +1,8 @@
-import 'package:community/network/api/api.dart';
-import 'package:community/network/models/tasks.dart';
+import 'package:community/enums/TaskType.dart';
+import 'package:community/widgets/appBar.dart';
 import 'package:community/widgets/drawer.dart';
 import 'package:community/widgets/tasks.dart';
 import 'package:flutter/material.dart';
-import 'package:community/widgets/appBar.dart';
 
 class CreatedTasksScreen extends StatefulWidget {
   CreatedTasksScreen({Key key}) : super(key: key);
@@ -15,14 +14,12 @@ class CreatedTasksScreen extends StatefulWidget {
 }
 
 class _CreatedTasksScreen extends State<CreatedTasksScreen> {
-  Future<Tasks> futureTasks;
 
   _CreatedTasksScreen();
 
   @override
   void initState() {
     super.initState();
-    futureTasks = Api.getCreatedTasks();
   }
 
   @override
@@ -30,6 +27,6 @@ class _CreatedTasksScreen extends State<CreatedTasksScreen> {
     return Scaffold(
       appBar: CustomAppBar(title: Text('Created Tasks'), appBar: AppBar(), automaticallyImplyLeading: true),
       drawer: NavigationDrawer(),
-      body: TasksList(futureTasks, true, true));
+        body: TasksList(TaskType.CREATED, true, true));
   }
 }

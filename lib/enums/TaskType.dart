@@ -1,0 +1,1 @@
+enum TaskType { PENDING, ASSIGNED, CREATED }

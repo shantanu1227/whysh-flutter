@@ -24,7 +24,11 @@ class _TaskItem extends State<TaskItem> {
   bool isCreator;
   bool isLoading = false;
 
-  _TaskItem(this.task, this.showContact, this.isCreator);
+  _TaskItem(this.task, this.showContact, this.isCreator) {
+    if (this.task.id == null) {
+      this.isLoading = true;
+    }
+  }
 
   Future<void> _launchNavigationURL() async {
     String url =
@@ -122,7 +126,8 @@ class _TaskItem extends State<TaskItem> {
     return new Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          new Text("#${task.id}", style: new TextStyle(color: Colors.grey[600]),),
+          new SelectableText(
+            "#${task.id}", style: new TextStyle(color: Colors.grey[600]),),
           new Container(
             padding: EdgeInsets.all(8.0),
             child: new Text(task.status.toUpperCase(), style: new TextStyle(color: Colors.white)),
@@ -153,7 +158,7 @@ class _TaskItem extends State<TaskItem> {
     return new Row(
       children: <Widget>[
         new Expanded(
-            child: new Text(task.task,
+            child: new SelectableText(task.task,
                 textAlign: TextAlign.start, style: new TextStyle(fontSize: 20)))
       ],
     );
@@ -169,7 +174,10 @@ class _TaskItem extends State<TaskItem> {
               size: 20.0,
             ),
             onPressed: () => this._launchNavigationURL()),
-        new Expanded(child: GestureDetector(child: Text(task.address.getAddress(), style: TextStyle(color: Colors.grey[600])), onTap: () => this._launchNavigationURL()))
+        new Expanded(child: GestureDetector(child: SelectableText(
+            task.address.getAddress(),
+            style: TextStyle(color: Colors.grey[600])),
+            onTap: () => this._launchNavigationURL()))
       ],
     );
   }
@@ -189,7 +197,9 @@ class _TaskItem extends State<TaskItem> {
         new IconButton(
             icon: Icon(Icons.call, color: Colors.blueAccent, size: 20.0),
             onPressed: () => this._launchCallUrl(phone)),
-        new Expanded(child: GestureDetector(child: Text(phone, style: TextStyle(color: Colors.grey[600])), onTap: () => this._launchCallUrl(phone),))
+        new Expanded(child: GestureDetector(child: SelectableText(
+            phone, style: TextStyle(color: Colors.grey[600])),
+          onTap: () => this._launchCallUrl(phone),))
       ],
     );
   }
