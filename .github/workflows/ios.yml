@@ -30,15 +30,11 @@ jobs:
       - name: Build IPA
         run: flutter build ios --release --no-codesign
 
-      - name: Upload ios artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: ios-build
-          path: build/ios/iphoneos
-
       - name: 'Build Fastlane'
         env:
+          FASTLANE_USER: ${{ secrets.APPLE_USERNAME }}
           FASTLANE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
         uses: maierj/fastlane-action@v1.4.0
         with:
           lane: 'beta'
