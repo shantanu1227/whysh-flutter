@@ -2,7 +2,7 @@ name: Whysh-Client-IOS
 
 on:
   push:
-    branches: [ master ]
+    branches: [ fix/ios-build ]
 
 jobs:
   build:
