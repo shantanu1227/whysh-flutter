@@ -77,7 +77,7 @@ class _CreateTaskForm extends State<CreateTaskForm> {
                 ),
                 SizedBox(height: 8),
                 Text('Add Address'),
-                AddressForm(address: this.address),
+                new AddressForm(address: this.address),
                 SizedBox(height: 16),
                 ButtonTheme(
                   minWidth: 200,
@@ -89,7 +89,7 @@ class _CreateTaskForm extends State<CreateTaskForm> {
                 )
                   )
               ],
-            ), // we will work in here
+            ),
           ],
         ),
       ),

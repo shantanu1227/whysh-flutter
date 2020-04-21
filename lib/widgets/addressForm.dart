@@ -17,10 +17,12 @@ class AddressForm extends StatefulWidget {
 }
 
 class _AddressForm extends State<AddressForm> {
-  loc.Location location = new loc.Location();
+  loc.Location location;
   loc.LocationData _locationData;
   SharedPreferences prefs;
   Address address;
+  bool hasLocationPermission = true;
+  bool hasLocationService = true;
 
   Map<String, bool> validateFields = {
     'flat': false,
@@ -31,11 +33,18 @@ class _AddressForm extends State<AddressForm> {
 
   _AddressForm(this.address);
 
-  void getLocation() async{
+  void getLocation({BuildContext context}) async{
+    location = new loc.Location();
     loc.PermissionStatus _permissionGranted = await location.hasPermission();
     if (_permissionGranted == loc.PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != loc.PermissionStatus.granted) {
+        setState(() {
+          hasLocationPermission = false;
+        });
+        if (context != null && _permissionGranted == loc.PermissionStatus.deniedForever) {
+          Scaffold.of(context).showSnackBar(SnackBar(content: Text('Grant permission in settings.')));
+        }
         return;
       }
     }
@@ -43,12 +52,17 @@ class _AddressForm extends State<AddressForm> {
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
       if (!_serviceEnabled) {
+        setState(() {
+          hasLocationService = false;
+        });
         return;
       }
     }
     loc.LocationData __locationData = await location.getLocation();
     setState(() {
       _locationData = __locationData;
+      hasLocationPermission = true;
+      hasLocationService = true;
       this.address.location = new Location(
           latitude: __locationData.latitude,
           longitude: __locationData.latitude
@@ -68,6 +82,14 @@ class _AddressForm extends State<AddressForm> {
 
   @override
   Widget build(BuildContext context) {
+    if (!hasLocationPermission || !hasLocationService) {
+      return Column(
+          children: <Widget>[
+            Text('Please give location permission.'),
+            RaisedButton(onPressed: () => getLocation(context: context), child: Text('Grant Permission'), color: Colors.blue, textColor: Colors.white,),
+          ],
+        );
+    }
     if (_locationData == null || prefs == null) {
       return Center(
         child: CircularProgressIndicator(

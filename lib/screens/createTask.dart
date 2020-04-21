@@ -28,7 +28,7 @@ class _CreateTaskScreen extends State<CreateTaskScreen> {
           color: Colors.grey[200],
           padding: EdgeInsets.all(8),
           child: Card(
-            child: CreateTaskForm()
+            child: new CreateTaskForm()
           ),
         )
     );

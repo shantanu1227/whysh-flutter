@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color backgroundColor = const Color(0xFF3AB795);
-  final Text title;
+  final Widget title;
   final bool automaticallyImplyLeading;
   final bool showIcon;
   final AppBar appBar;
@@ -16,13 +16,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    double titlePadding = 0;
-    if (showIcon == true) {
-      titlePadding = 8;
-    }
     List<Widget> appBarTitleElements = [
-              Container(
-                  padding: EdgeInsets.all(titlePadding), child: title)
+              Expanded(
+                child: title,
+                  )
             ];
 
     if (showIcon == true) {
@@ -34,7 +31,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
 
     return AppBar(
-      title: Row(children: appBarTitleElements),
+      title: Container(child: Row(children: appBarTitleElements)),
       backgroundColor: backgroundColor,
       actions: widgets,
       automaticallyImplyLeading: automaticallyImplyLeading != null ? automaticallyImplyLeading : true
