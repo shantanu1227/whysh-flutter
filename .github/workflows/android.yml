@@ -1,4 +1,4 @@
-name: Whysh-Client
+name: Whysh-Client-Android
 
 on:
   push:
