@@ -1,4 +1,4 @@
-name: Whysh-Client
+name: Whysh-Client-IOS
 
 on:
   push:
@@ -36,7 +36,10 @@ jobs:
           name: ios-build
           path: build/ios/iphoneos
 
-      - uses: maierj/fastlane-action@v1.4.0
+      - name: 'Build Fastlane'
+        env:
+          FASTLANE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+        uses: maierj/fastlane-action@v1.4.0
         with:
           lane: 'beta'
           subdirectory: 'ios'
