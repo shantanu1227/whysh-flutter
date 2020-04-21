@@ -14,6 +14,12 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
+      
+      - run:  mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+      - uses: webfactory/ssh-agent@v0.1.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - uses: subosito/flutter-action@v1
         with:
           channel: 'beta'
@@ -36,6 +42,7 @@ jobs:
           FASTLANE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           FASTLANE_SESSION: ${{ secrets.APPLE_SESSION }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         uses: maierj/fastlane-action@v1.4.0
         with:
           lane: 'beta'
