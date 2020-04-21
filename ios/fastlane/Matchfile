@@ -1,4 +1,4 @@
-git_url("https://github.com/shantanu1227/whysh-ios-match.git")
+git_url("git@github.com:shantanu1227/whysh-ios-match.git")
 
 storage_mode("git")
 
