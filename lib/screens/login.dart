@@ -1,10 +1,9 @@
 import 'package:community/config/routes.dart';
+import 'package:community/widgets/appBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:community/widgets/appBar.dart';
 
 class LoginScreen extends StatefulWidget {
-
   @override
   _LoginScreen createState() {
     return new _LoginScreen();
@@ -49,7 +48,13 @@ class _LoginScreen extends State<LoginScreen> {
           Navigator.of(context).pop();
           verifyCredential(context, _auth, credential);
         },
-        verificationFailed: null,
+        verificationFailed: (AuthException ex) {
+          print(ex.message);
+          setState(() {
+            loginButtonLoading = false;
+            confirmButtonLoading = false;
+          });
+        },
         codeSent: (String verificationId, [int forceResendingToken]) async {
           await showDialog(
               context: context,
@@ -90,9 +95,9 @@ class _LoginScreen extends State<LoginScreen> {
                           });
                           final _code = _codeController.text.trim();
                           AuthCredential credential =
-                              PhoneAuthProvider.getCredential(
-                                  verificationId: verificationId,
-                                  smsCode: _code);
+                          PhoneAuthProvider.getCredential(
+                              verificationId: verificationId,
+                              smsCode: _code);
                           verifyCredential(context, _auth, credential);
                         },
                       )
@@ -100,75 +105,82 @@ class _LoginScreen extends State<LoginScreen> {
                   ),
                 );
               });
-            setState(() {
-              loginButtonLoading = false;
-              confirmButtonLoading = false;
-            });
+          setState(() {
+            loginButtonLoading = false;
+            confirmButtonLoading = false;
+          });
         },
-        codeAutoRetrievalTimeout: null);
+        codeAutoRetrievalTimeout: (String timeout) {
+          print("Time out");
+          setState(() {
+            loginButtonLoading = false;
+            confirmButtonLoading = false;
+          });
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: Text("Login"),
-        appBar: AppBar(),
-        automaticallyImplyLeading: false, 
-        showIcon: true
+        titleContent: Text("Login"),
+        automaticallyImplyLeading: false,
+        showIcon: true,
       ),
       body: SingleChildScrollView(
           child: Container(
-        padding: EdgeInsets.all(32),
-        child: Form(
-            key: _loginFormKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 16,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: "Phone Number"),
-                  controller: _phoneController,
-                  validator: (String value) {
-                    String pattern = r'[6-9][0-9]{9}$';
-                    RegExp regExp = new RegExp(pattern);
-                    if (!regExp.hasMatch(value)) {
-                      return "Please enter a 10 digit valid phone number";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 32),
-                Container(
-                  width: double.infinity,
-                  child: RaisedButton(
-                    child: getLoginButtonChild(),
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(16),
-                    onPressed: loginButtonLoading?null:() {
-                      setState(() {
-                        loginButtonLoading = true;
-                      });
-                      if (_loginFormKey.currentState.validate()) {
-                        final phone = _phoneController.text.trim();
-                        loginUser(phone, context);
-                      } else {
-                        setState(() {
-                          loginButtonLoading = false;
-                        });
-                      }
-                    },
-                    color: Colors.blueAccent,
-                    disabledColor: Colors.blueAccent,
-                  ),
-                )
-              ],
-            )),
-      )),
+            padding: EdgeInsets.all(32),
+            child: Form(
+                key: _loginFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 16,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(labelText: "Phone Number"),
+                      controller: _phoneController,
+                      validator: (String value) {
+                        String pattern = r'[6-9][0-9]{9}$';
+                        RegExp regExp = new RegExp(pattern);
+                        if (!regExp.hasMatch(value)) {
+                          return "Please enter a 10 digit valid phone number";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 32),
+                    Container(
+                      width: double.infinity,
+                      child: RaisedButton(
+                        child: getLoginButtonChild(),
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(16),
+                        onPressed: loginButtonLoading
+                            ? null
+                            : () {
+                          setState(() {
+                            loginButtonLoading = true;
+                          });
+                          if (_loginFormKey.currentState.validate()) {
+                            final phone = _phoneController.text.trim();
+                            loginUser(phone, context);
+                          } else {
+                            setState(() {
+                              loginButtonLoading = false;
+                            });
+                          }
+                        },
+                        color: Colors.blueAccent,
+                        disabledColor: Colors.blueAccent,
+                      ),
+                    )
+                  ],
+                )),
+          )),
     );
   }
 

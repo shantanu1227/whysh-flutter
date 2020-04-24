@@ -1,43 +1,37 @@
 import 'package:flutter/material.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Color backgroundColor = const Color(0xFF3AB795);
-  final Widget title;
+class CustomAppBar extends AppBar implements PreferredSizeWidget {
+  final Widget titleContent;
   final bool automaticallyImplyLeading;
   final bool showIcon;
-  final AppBar appBar;
   final List<Widget> widgets;
+  final Widget title;
 
   /// you can add more fields that meet your needs
 
-  const CustomAppBar({Key key, this.title, this.appBar, this.widgets, this.automaticallyImplyLeading, this.showIcon})
-      : super(key: key);
+  CustomAppBar(
+      {Key key, this.titleContent, this.widgets, this.automaticallyImplyLeading: true, this.showIcon})
+      :
+        title = getTitle(titleContent, showIcon),
+        super(key: key,
+        actions: widgets,
+        automaticallyImplyLeading: automaticallyImplyLeading,
+        backgroundColor: Color(0xFF3AB795),);
 
-
-  @override
-  Widget build(BuildContext context) {
+  static Widget getTitle(Widget titleContent, bool showIcon) {
     List<Widget> appBarTitleElements = [
-              Expanded(
-                child: title,
-                  )
-            ];
-
+      Expanded(
+        child: titleContent,
+      ),
+    ];
     if (showIcon == true) {
       appBarTitleElements.insert(0, Image.asset(
-                 'assets/images/whysh-white-no-text.png',
-                  fit: BoxFit.contain,
-                  height: 32,
-              ));
+        'assets/images/whysh-white-no-text.png',
+        fit: BoxFit.contain,
+        height: 32,
+      ));
     }
-
-    return AppBar(
-      title: Container(child: Row(children: appBarTitleElements)),
-      backgroundColor: backgroundColor,
-      actions: widgets,
-      automaticallyImplyLeading: automaticallyImplyLeading != null ? automaticallyImplyLeading : true
-    );
+    return Container(child: Row(children: appBarTitleElements));
   }
 
-  @override
-  Size get preferredSize => new Size.fromHeight(appBar.preferredSize.height);
 }

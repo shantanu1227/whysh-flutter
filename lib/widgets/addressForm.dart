@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:community/config/constants.dart';
 import 'package:community/network/models/address.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AddressForm extends StatefulWidget {
   final Address address;
+
   AddressForm({this.address});
 
   @override
@@ -23,6 +26,7 @@ class _AddressForm extends State<AddressForm> {
   Address address;
   bool hasLocationPermission = true;
   bool hasLocationService = true;
+  StreamSubscription<loc.LocationData> locationListener;
 
   Map<String, bool> validateFields = {
     'flat': false,
@@ -59,13 +63,21 @@ class _AddressForm extends State<AddressForm> {
       }
     }
     loc.LocationData __locationData = await location.getLocation();
+    setLocationVariables(__locationData);
+    locationListener =
+        location.onLocationChanged.listen((loc.LocationData currentLocation) {
+          setLocationVariables(currentLocation);
+        });
+  }
+
+  void setLocationVariables(loc.LocationData locationData) {
     setState(() {
-      _locationData = __locationData;
+      _locationData = locationData;
       hasLocationPermission = true;
       hasLocationService = true;
       this.address.location = new Location(
-          latitude: __locationData.latitude,
-          longitude: __locationData.latitude
+          latitude: locationData.latitude,
+          longitude: locationData.latitude
       );
     });
   }
@@ -84,11 +96,11 @@ class _AddressForm extends State<AddressForm> {
   Widget build(BuildContext context) {
     if (!hasLocationPermission || !hasLocationService) {
       return Column(
-          children: <Widget>[
-            Text('Please give location permission.'),
-            RaisedButton(onPressed: () => getLocation(context: context), child: Text('Grant Permission'), color: Colors.blue, textColor: Colors.white,),
-          ],
-        );
+        children: <Widget>[
+          Text('Please give location permission.'),
+          RaisedButton(onPressed: () => getLocation(context: context), child: Text('Grant Permission'), color: Colors.blue, textColor: Colors.white,),
+        ],
+      );
     }
     if (_locationData == null || prefs == null) {
       return Center(
@@ -117,7 +129,7 @@ class _AddressForm extends State<AddressForm> {
             return null;
           },
           decoration: InputDecoration(
-              labelText: 'Flat/Building No',
+            labelText: 'Flat/Building No',
           ),
           onSaved: (val) => this.address.flat = val,
         ),
@@ -142,7 +154,7 @@ class _AddressForm extends State<AddressForm> {
             return null;
           },
           decoration: InputDecoration(
-              labelText: 'Street 1',
+            labelText: 'Street 1',
           ),
           onSaved: (val) => address.street1 = val,
         ),
@@ -219,5 +231,12 @@ class _AddressForm extends State<AddressForm> {
       ],
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    locationListener.cancel();
+  }
+
 
 }

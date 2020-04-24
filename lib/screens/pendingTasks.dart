@@ -42,7 +42,9 @@ class _PendingTasksScreen extends State<PendingTasksScreen> {
     }
     String message = 'Help Someoone in $zip';
     return Scaffold(
-        appBar: CustomAppBar(title: Tooltip(message: message, child: Text(message),), appBar: AppBar(), automaticallyImplyLeading: true),
+        appBar: CustomAppBar(
+            titleContent: Tooltip(message: message, child: Text(message),),
+            automaticallyImplyLeading: true),
         drawer: NavigationDrawer(),
         body: body
     );

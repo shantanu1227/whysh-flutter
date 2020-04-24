@@ -25,7 +25,8 @@ class _AssignedTasksScreen extends State<AssignedTasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(title: Text('Assigned Tasks'), appBar: AppBar(), automaticallyImplyLeading: true),
+        appBar: CustomAppBar(titleContent: Text('Assigned Tasks'),
+            automaticallyImplyLeading: true),
         drawer: NavigationDrawer(),
         body: TasksList(TaskType.ASSIGNED, true, false));
   }

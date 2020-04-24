@@ -25,7 +25,8 @@ class _CreatedTasksScreen extends State<CreatedTasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: Text('Created Tasks'), appBar: AppBar(), automaticallyImplyLeading: true),
+        appBar: CustomAppBar(titleContent: Text('Created Tasks'),
+            automaticallyImplyLeading: true),
       drawer: NavigationDrawer(),
         body: TasksList(TaskType.CREATED, true, true));
   }
