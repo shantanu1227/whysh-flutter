@@ -77,7 +77,7 @@ class _AddressForm extends State<AddressForm> {
       hasLocationService = true;
       this.address.location = new Location(
           latitude: locationData.latitude,
-          longitude: locationData.latitude
+          longitude: locationData.longitude
       );
     });
   }
