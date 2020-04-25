@@ -2,7 +2,7 @@ name: Whysh-Client-Web
 
 on:
   push:
-    branches: [ web/cd ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
           FIREBASE_JSON: ${{ secrets.FIREBASE_JSON }}
         run: echo $FIREBASE_JSON > firebase.json
 
-      - name: Set Cefault Project
+      - name: Set Default Project
         env:
           FIREBASE_PROJECT: ${{ secrets.FIREBASE_PROJECT }}
         run: echo $FIREBASE_PROJECT > .firebaserc
