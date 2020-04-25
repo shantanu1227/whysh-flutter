@@ -28,6 +28,11 @@ jobs:
           FIREBASE_JSON: ${{ secrets.FIREBASE_JSON }}
         run: echo $FIREBASE_JSON > firebase.json
 
+      - name: Set Cefault Project
+        env:
+          FIREBASE_PROJECT: ${{ secrets.FIREBASE_PROJECT }}
+        run: echo FIREBASE_PROJECT > .firebaserc
+
       - name: Build Web
         run: flutter build web --release
 
