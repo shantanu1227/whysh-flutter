@@ -25,3 +25,16 @@ platform :ios do
     upload_to_testflight(skip_submission: true, skip_waiting_for_build_processing: true)
   end
 end
+
+platform :ios do
+  desc "Resign development"
+  lane :dev do
+    setup_ci(provider: "travis")
+    match(type: "development")
+    resign(
+        ipa: ENV['IPA_FILE'],
+        signing_identity: ENV['IOS_DEVELOPMENT_SIGNING_IDENTITY'],
+        provisioning_profile: ENV[ENV['IOS_DEVELOPMENT_PROVISIONING_PROFILE']]
+     )
+  end
+end
