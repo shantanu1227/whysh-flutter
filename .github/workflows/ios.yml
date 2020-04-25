@@ -2,7 +2,7 @@ name: Whysh-Client-IOS
 
 on:
   push:
-    branches: [ fix/ios ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -68,6 +68,7 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           GITHUB_API_TOKEN: ${{ secrets.TOKEN }}
           IOS_DEVELOPMENT_SIGNING_IDENTITY: ${{ secrets.IOS_DEVELOPMENT_SIGNING_IDENTITY }}
+          IOS_DEVELOPMENT_PROVISIONING_PROFILE: ${{ secrets.IOS_DEVELOPMENT_PROVISIONING_PROFILE }}
           IPA_FILE: Runner.ipa
         uses: maierj/fastlane-action@v1.4.0
         with:
