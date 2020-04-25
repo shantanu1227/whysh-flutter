@@ -31,7 +31,7 @@ jobs:
       - name: Set Cefault Project
         env:
           FIREBASE_PROJECT: ${{ secrets.FIREBASE_PROJECT }}
-        run: echo FIREBASE_PROJECT > .firebaserc
+        run: echo $FIREBASE_PROJECT > .firebaserc
 
       - name: Build Web
         run: flutter build web --release
