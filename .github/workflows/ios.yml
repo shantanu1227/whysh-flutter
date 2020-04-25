@@ -2,7 +2,7 @@ name: Whysh-Client-IOS
 
 on:
   push:
-    branches: [ master ]
+    branches: [ fix/ios ]
 
 jobs:
   build:
@@ -59,6 +59,29 @@ jobs:
           name: app-release
           path: ios/Runner.ipa
 
+      - name: 'Dev Code Sign'
+        env:
+          FASTLANE_USER: ${{ secrets.APPLE_USERNAME }}
+          FASTLANE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          FASTLANE_SESSION: ${{ secrets.APPLE_SESSION }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          GITHUB_API_TOKEN: ${{ secrets.TOKEN }}
+          IOS_DEVELOPMENT_SIGNING_IDENTITY: ${{ secrets.IOS_DEVELOPMENT_SIGNING_IDENTITY }}
+          IPA_FILE: Runner.ipa
+        uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: 'dev'
+          subdirectory: 'ios'
+          skip-tracking: 'true'
+
+      - name: Upload dev ipa artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: app-dev
+          path: ios/Runner.ipa
+
+
   distribute:
     name: Distribute ios app to firebase
     needs: [build]
@@ -73,7 +96,7 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@master
         with:
-          name: app-release
+          name: app-dev
 
       - name: Upload to google distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
@@ -81,4 +104,4 @@ jobs:
           appId: ${{ secrets.IOS_FIREBASE_APP_ID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: ${{ secrets.TESTER_GROUPS }}
-          file: app-release/Runner.ipa
+          file: app-dev/Runner.ipa
