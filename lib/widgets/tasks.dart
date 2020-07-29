@@ -1,9 +1,11 @@
 import 'package:community/enums/TaskType.dart';
 import 'package:community/network/api/api.dart';
+import 'package:community/network/api/helper.dart';
 import 'package:community/network/models/task.dart';
 import 'package:community/network/models/tasks.dart';
 import 'package:community/widgets/taskItem.dart';
 import 'package:flutter/material.dart';
+import 'package:http/io_client.dart';
 
 class TasksList extends StatefulWidget {
   final TaskType taskType;
@@ -11,7 +13,7 @@ class TasksList extends StatefulWidget {
   final bool isCreator;
   final int zip;
 
-  TasksList(this.taskType, this.showContact, this.isCreator, {this.zip});
+  const TasksList(this.taskType, this.showContact, this.isCreator, {this.zip});
 
   @override
   _TasksList createState() {
@@ -53,12 +55,13 @@ class _TasksList extends State<TasksList> {
   }
 
   Future<Tasks> getTaskUrl() {
+    final client = IOClient();
     if (taskType == TaskType.ASSIGNED) {
-      return Api.getAssignedTasks(page: next);
+      return Api.getAssignedTasks(client, ApiHelper(), page: next);
     } else if (taskType == TaskType.CREATED) {
-      return Api.getCreatedTasks(page: next);
+      return Api.getCreatedTasks(client, ApiHelper(), page: next);
     } else {
-      return Api.getPendingTasks(zip, page: next);
+      return Api.getPendingTasks(client, ApiHelper(), zip, page: next);
     }
   }
 

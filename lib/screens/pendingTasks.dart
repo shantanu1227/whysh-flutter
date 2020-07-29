@@ -40,13 +40,15 @@ class _PendingTasksScreen extends State<PendingTasksScreen> {
     } else {
       body = TasksList(TaskType.PENDING, false, false, zip: zip);
     }
-    String message = 'Help Someoone in $zip';
+    String message = 'Help Someone in $zip';
     return Scaffold(
         appBar: CustomAppBar(
-            titleContent: Tooltip(message: message, child: Text(message),),
+            titleContent: Tooltip(
+              message: message,
+              child: Text(message),
+            ),
             automaticallyImplyLeading: true),
         drawer: NavigationDrawer(),
-        body: body
-    );
+        body: body);
   }
 }

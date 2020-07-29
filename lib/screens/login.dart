@@ -8,6 +8,8 @@ class LoginScreen extends StatefulWidget {
   _LoginScreen createState() {
     return new _LoginScreen();
   }
+
+  const LoginScreen();
 }
 
 class _LoginScreen extends State<LoginScreen> {
@@ -31,6 +33,7 @@ class _LoginScreen extends State<LoginScreen> {
         });
       }
     } on Exception catch (e) {
+      print(e);
       setState(() {
         loginButtonLoading = false;
         confirmButtonLoading = false;

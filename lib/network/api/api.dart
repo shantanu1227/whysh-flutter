@@ -13,13 +13,15 @@ class Api {
 
   static List<Category> categories;
 
-  static Future<Tasks> getTasks(String url, {String page}) async {
-    Map<String, String> headers = await ApiHelper.getHeaders();
+  static Future<Tasks> getTasks(
+      http.Client client, ApiHelper helper, String url,
+      {String page}) async {
+    Map<String, String> headers = await helper.getHeaders();
     String requestURL = url;
     if (page != null) {
       requestURL = '$requestURL?page=$page';
     }
-    final response = await http.get(requestURL, headers: headers);
+    final response = await client.get(requestURL, headers: headers);
     if (response.statusCode == HttpStatus.ok) {
       Tasks tasks = Tasks.fromJson(json.decode(response.body));
       tasks.currentUrl = url;
@@ -31,25 +33,29 @@ class Api {
     }
   }
 
-  static Future<Tasks> getPendingTasks(zip, {page}) async {
+  static Future<Tasks> getPendingTasks(
+      http.Client client, ApiHelper helper, zip,
+      {page}) async {
     String url = Constants.BASE_URL + '/tasks/$zip/incomplete';
-    return getTasks(url, page: page);
+    return getTasks(client, helper, url, page: page);
   }
 
-  static Future<Tasks> getCreatedTasks({page}) async {
+  static Future<Tasks> getCreatedTasks(http.Client client, ApiHelper helper,
+      {page}) async {
     const url = Constants.BASE_URL + '/users/creator/tasks';
-    return getTasks(url, page: page);
+    return getTasks(client, helper, url, page: page);
   }
 
-  static Future<Tasks> getAssignedTasks({page}) async {
+  static Future<Tasks> getAssignedTasks(http.Client client, ApiHelper helper,
+      {page}) async {
     const url = Constants.BASE_URL + '/users/assignee/tasks';
-    return getTasks(url, page: page);
+    return getTasks(client, helper, url, page: page);
   }
 
   static Future<void> registerUser(
       String phone, String name, String zip) async {
     const url = Constants.BASE_URL + '/users';
-    Map<String, String> headers = await ApiHelper.getHeaders();
+    Map<String, String> headers = await ApiHelper().getHeaders();
     final response = await http.post(url,
         headers: headers,
         body: jsonEncode(
@@ -66,20 +72,20 @@ class Api {
 
   static Future<void> assignTask(String taskId) async{
     String url = Constants.BASE_URL + '/tasks/$taskId/assign';
-    Map<String, String> headers = await ApiHelper.getHeaders();
+    Map<String, String> headers = await ApiHelper().getHeaders();
     final response = await http.patch(url, headers: headers);
     if (response.statusCode == HttpStatus.ok) {
       return;
     } else {
       throw Exception(
-        'Error while assigning. ${jsonDecode(response.body)['message']}'
+          'Error while assigning. ${jsonDecode(response.body)['message']}'
       );
     }
   }
 
   static Future<void> cancelTask(String taskId) async{
     String url = Constants.BASE_URL + '/tasks/$taskId/cancel';
-    Map<String, String> headers = await ApiHelper.getHeaders();
+    Map<String, String> headers = await ApiHelper().getHeaders();
     final response = await http.patch(url, headers: headers);
     if (response.statusCode == HttpStatus.ok) {
       return;
@@ -92,7 +98,7 @@ class Api {
 
   static Future<void> completeTask(String taskId) async{
     String url = Constants.BASE_URL + '/tasks/$taskId/complete';
-    Map<String, String> headers = await ApiHelper.getHeaders();
+    Map<String, String> headers = await ApiHelper().getHeaders();
     final response = await http.patch(url, headers: headers);
     if (response.statusCode == HttpStatus.ok) {
       return;
@@ -108,21 +114,24 @@ class Api {
       return categories;
     }
     String url = Constants.BASE_URL + '/categories';
-    Map<String, String> headers = await ApiHelper.getHeaders();
+    Map<String, String> headers = await ApiHelper().getHeaders();
     final response = await http.get(url, headers: headers);
     if (response.statusCode == HttpStatus.ok) {
-      categories = jsonDecode(response.body)['categories'].map<Category>((_json) => Category.fromJson(_json)).toList();
+      categories =
+          jsonDecode(response.body)['categories'].map<Category>((_json) =>
+              Category.fromJson(_json)).toList();
       return categories;
     } else {
       throw Exception(
-          'Error while getting categories. ${jsonDecode(response.body)['message']}'
+          'Error while getting categories. ${jsonDecode(
+              response.body)['message']}'
       );
     }
   }
 
   static Future<Task> createTask(Task task) async {
     String url = Constants.BASE_URL + '/tasks';
-    Map<String, String> headers = await ApiHelper.getHeaders();
+    Map<String, String> headers = await ApiHelper().getHeaders();
     String body = jsonEncode(task.toJson());
     final response = await http.post(url, headers: headers, body: body);
     if (response.statusCode == HttpStatus.created) {

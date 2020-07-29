@@ -10,7 +10,7 @@ class TaskItem extends StatefulWidget {
   final bool showContact;
   final bool isCreator;
 
-  TaskItem(this.task, {this.showContact: false, this.isCreator: true});
+  const TaskItem(this.task, {this.showContact: false, this.isCreator: true});
 
   @override
   _TaskItem createState() {
